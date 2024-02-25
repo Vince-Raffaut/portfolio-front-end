@@ -1,0 +1,42 @@
+---
+interface Props {
+    description?: string;
+    image?: {
+        url: string;
+        alt: string;
+    };
+    currentExperience?: {
+        role: string;
+        company: string;
+    }
+}
+
+const { description, image, currentExperience }  = Astro.props;
+---
+
+<section class="hero-banner">
+    <div class="her-banner__grid">
+        <div>
+            {description && 
+                <p>{description}</p> 
+            }
+
+            {currentExperience && 
+                <p>{currentExperience.role}</p>
+                <p>{currentExperience.company}</p>
+            }
+        </div>
+        <div>
+            {image && 
+                <img src={image.url} alt={image.alt} />
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+.hero-banner {
+    background: #000;
+    height: 100vh;
+}
+</style>

@@ -1,0 +1,34 @@
+---
+import { contentfulClient } from "../lib/contentful";
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import type { pagePosts } from "../lib/contentful";
+
+import { BlockRenderer } from '../components/renderer/renderer.astro';
+
+
+export async function getStaticPaths() {
+  const { items } = await contentfulClient.getEntries<pagePosts>({
+    content_type: "pagePosts",
+  });
+  const pagesGet = items.map((item) => ({
+    params: { slug: item.fields.slug },
+    props: {
+      title: item.fields.title,
+      components: item.fields.components
+      // content: documentToHtmlString(item.fields.content),
+      // date: new Date(item.fields.date).toLocaleDateString(),
+    },
+  }));
+  return pagesGet;
+}
+
+const { title, components } = Astro.props;
+
+---
+<div>
+    <h1>{title}</h1>
+      <BlockRenderer block={HeroBanner} />
+      {components.map((component : any) => {
+        return (<div>{JSON.stringify(component)}</div>)
+      })}
+</div>
